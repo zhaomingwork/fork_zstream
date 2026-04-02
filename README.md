@@ -19,9 +19,9 @@ fork_zstream is a real-time audio stream bidirectional forwarding module based o
 
 fork_zstream adopts a modular design, mainly composed of the following parts:
 
-- **Core Module**: mod_forkstream.c, implementing the main functional logic
-- **Interface Definition**: iforkstream.h, defining the public interface for TTS functionality
-- **Data Structure**: mod_forkstream.h, defining data structures and constants used by the module
+- **Core Module**: mod_forkzstream.c, implementing the main functional logic
+- **Interface Definition**: iforkzstream.h, defining the public interface for TTS functionality
+- **Data Structure**: mod_forkzstream.h, defining data structures and constants used by the module
 
 ## 2. System Architecture and Working Principle
 
@@ -76,7 +76,7 @@ Session management is one of the core functions of the fork_zstream module, resp
 #### Session Initialization
 
 ```c
-static switch_status_t forkstream_init(switch_core_session_t *session)
+static switch_status_t forkzstream_init(switch_core_session_t *session)
 {
     // Check if the session is already initialized
     // Allocate ASR processing handle
