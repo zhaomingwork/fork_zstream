@@ -1,9 +1,59 @@
+# fork_zstream: FreeSWITCH实时音频流双向转发模块
 
-# fork_zstream：FreeSWITCH实时音频流双向转发模块技术解析
+## 使用指南
+见test/test_forkzstream_ws.py
+### 模块加载
+
+要使用fork_zstream模块，首先需要将其加载到FreeSWITCH中：
+
+```
+load mod_forkzstream
+```
+
+### 基本命令
+
+模块提供了一个名为`forkzstream`的FreeSWITCH应用，支持以下命令：
+
+#### 启动WebSocket TTS
+
+```
+forkzstream start <reqid> websocket <params>
+```
+
+- **reqid**：请求的唯一标识符
+- **params**：WebSocket服务参数，JSON格式，包括：
+  - `url`：WebSocket服务器URL
+  - `text`：要合成的文本（可选）
+
+#### 停止TTS
+
+```
+forkzstream stop <reqid>
+```
+
+- **reqid**：要停止的请求的唯一标识符
+
+### 使用示例
+
+#### 使用WebSocket TTS服务
+
+```
+forkzstream start 12345 ws {"url":"ws://localhost:8080/tts"}
+```
+
+### 事件处理
+
+模块会为各种操作生成自定义事件。您可以在FreeSWITCH应用中监听这些事件：
+
+- `mod_forkzstream::connect`：连接建立事件
+- `mod_forkzstream::disconnect`：连接终止事件
+- `mod_forkzstream::error`：错误发生事件
+- `mod_forkzstream::json`：接收到JSON消息事件
+- `mod_forkzstream::play`：音频播放事件
 
 ## 1. 项目概述
 
-fork_zstream是一个基于FreeSWITCH的实时音频流双向转发模块，专注于实现FreeSWITCH与外部WebSocket服务之间的音频数据双向传输。该模块通过媒体bug(media_bug)技术捕获FreeSWITCH的音频流，将下行数据(ASR流)转发到WebSocket服务，同时接收WebSocket服务发送的上行数据(TTS流)并实时播放，实现了FreeSWITCH数据流的全双工转发处理。
+fork_zstream是一个基于FreeSWITCH的实时音频流双向转发模块，专注于实现FreeSWITCH与外部WebSocket服务之间的双向音频数据传输。该模块通过媒体bug(media_bug)技术捕获FreeSWITCH的音频流，将下行数据(ASR流)转发到WebSocket服务，同时接收WebSocket服务发送的上行数据(TTS流)并实时播放，实现了FreeSWITCH数据流的全双工转发处理。
 
 ### 1.1 核心功能
 
@@ -199,7 +249,7 @@ switch_status_t tts_session_text(switch_core_session_t *session,
                                  const char *reqid, const char* type, const char* param);
 ```
 
-发送文本到WebSocket服务进行TTS合成，支持不同类型的TTS服务。
+发送文本到WebSocket服务进行TTS合成。
 
 ## 4. 技术实现细节
 
